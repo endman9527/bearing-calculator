@@ -9,4 +9,4 @@
 - 移动端友好
 
 ## 访问地址
-https://你的用户名.github.io/bearing-calculator/
+https://endman9527.github.io/bearing-calculator/
