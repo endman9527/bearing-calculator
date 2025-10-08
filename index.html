@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <title>蜀利元 · 智能润滑计算器 · 专业版</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 15px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #ff6b35 0%, #e74c3c 100%);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .description {
+            font-size: 1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .top-panel {
+            background: #f8fafd;
+            padding: 20px;
+            border-bottom: 1px solid #e8f0ff;
+        }
+        
+        .control-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .control-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        label {
+            font-size: 14px;
+            color: #444;
+            font-weight: 500;
+        }
+        
+        .input-field, select {
+            padding: 8px 12px;
+            border: 1px solid #d6e1ff;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .input-field:focus, select:focus {
+            border-color: #ff6b35;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 9px 16px;
+            border-radius: 6px;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .btn-primary {
+            background: #ff6b35;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #e74c3c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 107, 53, 0.2);
+        }
+        
+        .btn-secondary {
+            background: #f3f6fb;
+            color: #333;
+            border: 1px solid #dbe8ff;
+        }
+        
+        .btn-secondary:hover {
+            background: #e9eff9;
+        }
+        
+        .btn-danger {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #ff5252;
+        }
+        
+        .content-area {
+            padding: 20px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid #e8f0ff;
+            margin-bottom: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            min-width: 900px;
+        }
+        
+        th, td {
+            border: 1px solid #e8f0ff;
+            padding: 10px 6px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        
+        th {
+            background: #f5f9ff;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            font-weight: 600;
+            color: #ff6b35;
+        }
+        
+        td input, td select {
+            width: 100%;
+            box-sizing: border-box;
+            border: none;
+            padding: 6px;
+            text-align: center;
+            background: transparent;
+            font-size: 13px;
+        }
+        
+        td input:focus, td select:focus {
+            outline: none;
+            background: rgba(255, 107, 53, 0.05);
+            border-radius: 4px;
+        }
+        
+        .small-text {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .muted-text {
+            color: #777;
+            font-size: 13px;
+        }
+        
+        .summary-panel {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .card {
+            background: #fff;
+            border: 1px solid #eef6ff;
+            padding: 15px;
+            border-radius: 8px;
+            flex: 1;
+            min-width: 300px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ff6b35;
+            font-size: 15px;
+        }
+        
+        .footer-row {
+            font-weight: 600;
+            background: #f8fafd;
+        }
+        
+        .delete-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .delete-btn:hover {
+            background: #ff5252;
+        }
+        
+        .note-box {
+            background: #fff5f0;
+            border-left: 4px solid #ff6b35;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            header {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .description {
+                font-size: 0.9rem;
+            }
+            
+            .top-panel {
+                padding: 15px;
+            }
+            
+            .control-group, .control-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .action-buttons {
+                justify-content: center;
+            }
+            
+            .btn {
+                flex: 1;
+                justify-content: center;
+                min-width: 120px;
+            }
+            
+            .content-area {
+                padding: 15px;
+            }
+            
+            .card {
+                min-width: 100%;
+            }
+            
+            table {
+                min-width: 700px;
+            }
+            
+            th, td {
+                padding: 8px 4px;
+                font-size: 13px;
+            }
+            
+            .summary-panel {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header {
+                padding: 15px 10px;
+            }
+            
+            h1 {
+                font-size: 1.3rem;
+            }
+            
+            .description {
+                font-size: 0.85rem;
+            }
+            
+            .top-panel {
+                padding: 10px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .content-area {
+                padding: 10px;
+            }
+            
+            .card {
+                padding: 12px;
+            }
+            
+            .note-box {
+                padding: 10px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>蜀利元 · 智能润滑计算器 · 专业版</h1>
+            <p class="description">精确计算轴承润滑脂加注量</p>
+        </header>
+        
+        <div class="top-panel">
+            <div class="control-group">
+                <div class="control-row">
+                    <label>当月天数： <input id="monthDays" class="input-field" type="number" value="30" min="1" style="width:70px"></label>
+                    <label>默认间隔 N（天）： <input id="defaultN" class="input-field" type="number" value="60" min="1" style="width:70px"></label>
+                    <label>默认润滑方式：
+                        <select id="defaultMethod" class="input-field" style="width:180px">
+                            <option value="both">两侧加脂 (Gp=0.005×D×B)</option>
+                            <option value="one">单侧加脂 (Gp=0.002×D×B)</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="addBtn" class="btn btn-primary">＋ 添加行</button>
+                <button id="importBtn" class="btn btn-secondary">导入 CSV/XLSX</button>
+                <input id="fileInput" type="file" accept=".csv,.xls,.xlsx" style="display:none">
+                <button id="calcBtn" class="btn btn-secondary">刷新计算</button>
+                <button id="exportBtn" class="btn btn-primary">导出 Excel (.xlsx)</button>
+                <button id="clearBtn" class="btn btn-danger">一键清空</button>
+            </div>
+        </div>
+        
+        <div class="content-area">
+            <div class="note-box">
+                <strong>注意：</strong>63-78°C为正常轴承运行温度，请根据实际运行温度选择，默认间隔N为设备厂家建议注油周期，一般在设备铭牌查看。
+            </div>
+            
+            <p class="muted-text" style="margin-bottom: 15px;">说明：选择轴承型号会自动填充尺寸 D（外径）与 B（宽度），行内可覆盖任何默认系数，系统会计算基于用户间隔的用量并给出推荐。</p>
+            
+            <div class="table-container">
+                <table id="grid">
+                    <thead>
+                        <tr>
+                            <th style="width: 90px;">设备编号</th>
+                            <th style="width: 100px;">轴承型号</th>
+                            <th style="width: 70px;">D (mm)</th>
+                            <th style="width: 70px;">B (mm)</th>
+                            <th style="width: 90px;">润滑方式</th>
+                            <th style="width: 80px;">N（天）</th>
+                            <th style="width: 80px;">转速</th>
+                            <th style="width: 100px;">运行温度</th>
+                            <th style="width: 80px;">载荷</th>
+                            <th style="width: 70px;">污染</th>
+                            <th style="width: 90px;">每次加脂 Gp (g)</th>
+                            <th style="width: 100px;">日用量 (N) g</th>
+                            <th style="width: 70px;">总系数</th>
+                            <th style="width: 100px;">月用量 (g)</th>
+                            <th style="width: 70px;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gridBody"></tbody>
+                    <tfoot>
+                        <tr class="footer-row">
+                            <td colspan="10" style="text-align:right;padding-right:12px" class="small-text">合计：</td>
+                            <td id="sumGp" class="small-text">0.00</td>
+                            <td id="sumUserDaily" class="small-text">0.000</td>
+                            <td></td>
+                            <td id="sumRecMonthly" class="small-text">0.00</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            
+            <div class="summary-panel">
+                <div class="card">
+                    <div class="card-title">关键公式</div>
+                    <div class="muted-text" style="line-height:1.6">
+                        Gp = k × D × B（k=0.005 双侧 / 0.002 单侧）<br>
+                        总系数 = C_temp × C_rpm × C_load × C_cont<br>
+                        日用量 (N) = (Gp ÷ N) × 总系数<br>
+                        月用量 = (Gp ÷ N_建议) × 总系数 × 当月天数
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">默认级别映射</div>
+                    <div class="muted-text" style="line-height:1.5">
+                        运行温度：低(47-63℃)=0.8，中(63-78℃)=1.0，高(78-93℃)=1.8，超高(93-107℃)=3.0<br>
+                        载荷：低(C/P>15)=1.0，中(C/P=8-15)=1.7，高(C/P=4-8)=2.5，很高(C/P<4)=5.0<br>
+                        污染：低=1.0，中=1.10，高=1.25<br>
+                        转速：低(<900)=0.5，中(900-1500)=1.0，高(1500-2000)=1.25，很高(>2000)=2.0
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ========= 准确轴承数据库（基于标准尺寸） ========= */
+        const bearingDB = {
+            // 深沟球轴承 60系列
+            "6000":{D:26,B:8},"6001":{D:28,B:8},"6002":{D:32,B:9},"6003":{D:35,B:10},
+            "6004":{D:42,B:12},"6005":{D:47,B:12},"6006":{D:55,B:13},"6007":{D:62,B:14},
+            "6008":{D:68,B:15},"6009":{D:75,B:16},"6010":{D:80,B:16},"6011":{D:90,B:18},
+            "6012":{D:95,B:18},"6013":{D:100,B:18},"6014":{D:110,B:20},"6015":{D:115,B:20},
+            "6016":{D:125,B:22},"6017":{D:130,B:22},"6018":{D:140,B:24},"6019":{D:145,B:24},
+            "6020":{D:150,B:24},
+            
+            // 深沟球轴承 62系列
+            "6200":{D:30,B:9},"6201":{D:32,B:10},"6202":{D:35,B:11},"6203":{D:40,B:12},
+            "6204":{D:47,B:14},"6205":{D:52,B:15},"6206":{D:62,B:16},"6207":{D:72,B:17},
+            "6208":{D:80,B:18},"6209":{D:85,B:19},"6210":{D:90,B:20},"6211":{D:100,B:21},
+            "6212":{D:110,B:22},"6213":{D:120,B:23},"6214":{D:125,B:24},"6215":{D:130,B:25},
+            "6216":{D:140,B:26},"6217":{D:150,B:28},"6218":{D:160,B:30},"6219":{D:170,B:32},
+            "6220":{D:180,B:34},
+            
+            // 深沟球轴承 63系列
+            "6300":{D:35,B:11},"6301":{D:37,B:12},"6302":{D:40,B:12},"6303":{D:47,B:14},
+            "6304":{D:52,B:15},"6305":{D:62,B:17},"6306":{D:72,B:19},"6307":{D:80,B:21},
+            "6308":{D:90,B:23},"6309":{D:100,B:25},"6310":{D:110,B:27},"6311":{D:120,B:29},
+            "6312":{D:130,B:31},"6313":{D:140,B:33},"6314":{D:150,B:35},"6315":{D:160,B:37},
+            "6316":{D:170,B:39},"6317":{D:180,B:41},"6318":{D:190,B:43},"6319":{D:200,B:45},
+            "6320":{D:215,B:47},
+            
+            // 深沟球轴承 64系列
+            "6403":{D:62,B:17},"6404":{D:72,B:19},"6405":{D:80,B:21},"6406":{D:90,B:23},
+            "6407":{D:100,B:25},"6408":{D:110,B:27},"6409":{D:120,B:29},"6410":{D:130,B:31},
+            "6411":{D:140,B:33},"6412":{D:150,B:35},"6413":{D:160,B:37},"6414":{D:175,B:41},
+            "6415":{D:190,B:45},"6416":{D:200,B:48},"6417":{D:210,B:52},"6418":{D:225,B:56},
+            
+            // 角接触球轴承 72系列
+            "7200":{D:35,B:11},"7201":{D:37,B:12},"7202":{D:40,B:12},"7203":{D:47,B:14},
+            "7204":{D:52,B:15},"7205":{D:62,B:17},"7206":{D:72,B:19},"7207":{D:80,B:21},
+            "7208":{D:90,B:23},"7209":{D:100,B:25},"7210":{D:110,B:27},"7211":{D:120,B:29},
+            "7212":{D:130,B:31},"7213":{D:140,B:33},"7214":{D:150,B:35},"7215":{D:160,B:37},
+            "7216":{D:170,B:39},"7217":{D:180,B:41},"7218":{D:190,B:43},"7219":{D:200,B:45},
+            "7220":{D:215,B:47},
+            
+            // 圆柱滚子轴承 N系列
+            "N202":{D:35,B:11},"N203":{D:40,B:12},"N204":{D:47,B:14},"N205":{D:52,B:15},
+            "N206":{D:62,B:16},"N207":{D:72,B:17},"N208":{D:80,B:18},"N209":{D:85,B:19},
+            "N210":{D:90,B:20},"N211":{D:100,B:21},"N212":{D:110,B:22},"N213":{D:120,B:23},
+            "N214":{D:125,B:24},"N215":{D:130,B:25},"N216":{D:140,B:26},"N217":{D:150,B:28},
+            "N218":{D:160,B:30},"N219":{D:170,B:32},"N220":{D:180,B:34},
+            
+            // 圆柱滚子轴承 NU系列
+            "NU202":{D:35,B:11},"NU203":{D:40,B:12},"NU204":{D:47,B:14},"NU205":{D:52,B:15},
+            "NU206":{D:62,B:16},"NU207":{D:72,B:17},"NU208":{D:80,B:18},"NU209":{D:85,B:19},
+            "NU210":{D:90,B:20},"NU211":{D:100,B:21},"NU212":{D:110,B:22},"NU213":{D:120,B:23},
+            "NU214":{D:125,B:24},"NU215":{D:130,B:25},"NU216":{D:140,B:26},"NU217":{D:150,B:28},
+            "NU218":{D:160,B:30},"NU219":{D:170,B:32},"NU220":{D:180,B:34},
+            
+            // 调心球轴承 12系列
+            "1200":{D:30,B:9},"1201":{D:32,B:10},"1202":{D:35,B:11},"1203":{D:40,B:12},
+            "1204":{D:47,B:14},"1205":{D:52,B:15},"1206":{D:62,B:16},"1207":{D:72,B:17},
+            "1208":{D:80,B:18},"1209":{D:85,B:19},"1210":{D:90,B:20},"1211":{D:100,B:21},
+            "1212":{D:110,B:22},"1213":{D:120,B:23},"1214":{D:125,B:24},"1215":{D:130,B:25},
+            "1216":{D:140,B:26},"1217":{D:150,B:28},"1218":{D:160,B:30},"1219":{D:170,B:32},
+            "1220":{D:180,B:34},
+            
+            // 调心滚子轴承 222系列
+            "22205":{D:52,B:18},"22206":{D:62,B:20},"22207":{D:72,B:23},"22208":{D:80,B:23},
+            "22209":{D:85,B:23},"22210":{D:90,B:23},"22211":{D:100,B:25},"22212":{D:110,B:28},
+            "22213":{D:120,B:31},"22214":{D:125,B:31},"22215":{D:130,B:31},"22216":{D:140,B:33},
+            "22217":{D:150,B:36},"22218":{D:160,B:40},"22219":{D:170,B:43},"22220":{D:180,B:46},
+            
+            // 调心滚子轴承 223系列
+            "22308":{D:90,B:33},"22309":{D:100,B:36},"22310":{D:110,B:40},"22311":{D:120,B:43},
+            "22312":{D:130,B:46},"22313":{D:140,B:48},"22314":{D:150,B:51},"22315":{D:160,B:55},
+            "22316":{D:170,B:58},"22317":{D:180,B:60},"22318":{D:190,B:64},"22319":{D:200,B:67},
+            "22320":{D:215,B:73},
+            
+            // 圆锥滚子轴承 302系列
+            "30203":{D:40,B:14},"30204":{D:47,B:15},"30205":{D:52,B:17},"30206":{D:62,B:17},
+            "30207":{D:72,B:18},"30208":{D:80,B:20},"30209":{D:85,B:21},"30210":{D:90,B:22},
+            "30211":{D:100,B:23},"30212":{D:110,B:24},"30213":{D:120,B:26},"30214":{D:125,B:27},
+            "30215":{D:130,B:28},"30216":{D:140,B:29},"30217":{D:150,B:31},"30218":{D:160,B:33},
+            "30219":{D:170,B:35},"30220":{D:180,B:37},
+            
+            // 圆锥滚子轴承 322系列
+            "32204":{D:47,B:19},"32205":{D:52,B:19},"32206":{D:62,B:21},"32207":{D:72,B:24},
+            "32208":{D:80,B:25},"32209":{D:85,B:26},"32210":{D:90,B:24},"32211":{D:100,B:27},
+            "32212":{D:110,B:30},"32213":{D:120,B:33},"32214":{D:125,B:34},"32215":{D:130,B:35},
+            "32216":{D:140,B:37},"32217":{D:150,B:40},"32218":{D:160,B:43},"32219":{D:170,B:46},
+            "32220":{D:180,B:49},
+            
+            // 推力球轴承 511系列
+            "51100":{D:26,B:9},"51101":{D:28,B:9},"51102":{D:30,B:9},"51103":{D:35,B:10},
+            "51104":{D:40,B:11},"51105":{D:42,B:11},"51106":{D:47,B:12},"51107":{D:52,B:12},
+            "51108":{D:60,B:13},"51109":{D:68,B:15},"51110":{D:70,B:14},"51111":{D:78,B:16},
+            "51112":{D:85,B:17},"51113":{D:90,B:18},"51114":{D:95,B:18},"51115":{D:100,B:19},
+            "51116":{D:110,B:19},"51117":{D:120,B:19},"51118":{D:125,B:22},"51120":{D:150,B:25},
+            
+            // 特殊型号和常用型号
+            "6330":{D:320,B:65},"6330 C3":{D:320,B:65},
+            "32008":{D:68,B:19},"32010":{D:80,B:21},
+            "NUP312":{D:130,B:34},"NJ312":{D:130,B:31},
+            "23144":{D:370,B:120},"23244":{D:400,B:144},
+            "24044":{D:340,B:118},"24144":{D:360,B:150},
+            "22244":{D:400,B:108},"22344":{D:420,B:140}
+        };
+        
+        /* ========= 映射量表 ========= */
+        const tempMap = { "低":0.8, "中":1.0, "高":1.8, "超高":3.0 };
+        const loadMap = { "低":1.0, "中":1.7, "高":2.5, "很高":5.0 };
+        const contamMap = { "低":1.0, "中":1.10, "高":1.25 };
+        const rpmMap = { "低":0.5, "中":1.0, "高":1.25, "很高":2.0 };
+
+        /* ========== DOM 元素 ========== */
+        const gridBody = document.getElementById('gridBody');
+        const monthDays = document.getElementById('monthDays');
+        const defaultN = document.getElementById('defaultN');
+        const defaultMethod = document.getElementById('defaultMethod');
+        const addBtn = document.getElementById('addBtn');
+        const importBtn = document.getElementById('importBtn');
+        const fileInput = document.getElementById('fileInput');
+        const calcBtn = document.getElementById('calcBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const clearBtn = document.getElementById('clearBtn');
+
+        addBtn.addEventListener('click', ()=>addRow());
+        importBtn.addEventListener('click', ()=>fileInput.click());
+        fileInput.addEventListener('change', handleFile);
+        calcBtn.addEventListener('click', recalcAll);
+        exportBtn.addEventListener('click', exportXLSX);
+        clearBtn.addEventListener('click', ()=>{ if(confirm('确认清空全部行？')){ gridBody.innerHTML=''; recalcAll(); } });
+
+        /* ========== 创建行函数 ========== */
+        function createInputCell(value='', type='text') {
+            const td = document.createElement('td');
+            const inp = document.createElement('input');
+            inp.type = type; inp.value = value !== undefined ? value : '';
+            inp.addEventListener('input', ()=>{ const tr = td.closest('tr'); recalcRow(tr); });
+            td.appendChild(inp); return td;
+        }
+        function createSelectCell(opts=[], value='') {
+            const td = document.createElement('td');
+            const sel = document.createElement('select');
+            opts.forEach(o=>{ const op=document.createElement('option'); op.value=o.value; op.text=o.text; sel.appendChild(op); });
+            sel.value = value;
+            sel.addEventListener('change', ()=>{ const tr=td.closest('tr'); recalcRow(tr); });
+            td.appendChild(sel); return td;
+        }
+
+        function addRow(def={}) {
+            const tr = document.createElement('tr');
+
+            const deviceTd = createInputCell(def.device || '', 'text');
+
+            // model select with auto-fill
+            const modelTd = document.createElement('td');
+            const modelSel = document.createElement('select');
+            const emptyOpt = document.createElement('option'); emptyOpt.value=''; emptyOpt.text='-- 选择/手动 --';
+            modelSel.appendChild(emptyOpt);
+            for (const k of Object.keys(bearingDB)) { const op=document.createElement('option'); op.value=k; op.text=k; modelSel.appendChild(op); }
+            modelSel.value = def.model || '';
+            modelSel.addEventListener('change', (e)=>{
+                const v = e.target.value;
+                if (bearingDB[v]) {
+                    tr.querySelector('td[data-col="D"] input').value = bearingDB[v].D;
+                    tr.querySelector('td[data-col="B"] input').value = bearingDB[v].B;
+                }
+                recalcRow(tr);
+            });
+            modelSel.addEventListener('input', ()=>recalcRow(tr));
+            modelTd.appendChild(modelSel);
+
+            const dTd = createInputCell(def.D || '', 'number'); dTd.setAttribute('data-col','D');
+            const bTd = createInputCell(def.B || '', 'number'); bTd.setAttribute('data-col','B');
+
+            // 使用全局默认值
+            const defaultMethodValue = def.method || defaultMethod.value;
+            const methodTd = createSelectCell([{value:'both',text:'两侧'},{value:'one',text:'单侧'}], defaultMethodValue);
+            
+            // 使用全局默认值
+            const defaultNValue = def.N || defaultN.value || 60;
+            const nTd = createInputCell(defaultNValue, 'number');
+            
+            // 转速选择框
+            const defaultRpm = def.rpm || '中';
+            const rpmTd = createSelectCell(
+                [{value:'低',text:'低(<900)'},{value:'中',text:'中(900-1500)'},{value:'高',text:'高(1500-2000)'},{value:'很高',text:'很高(>2000)'}],
+                defaultRpm
+            );
+            
+            // 运行温度选择框
+            const defaultTemp = def.temp || '中';
+            const tempTd = createSelectCell(
+                [{value:'低',text:'低(47-63℃)'},{value:'中',text:'中(63-78℃)'},{value:'高',text:'高(78-93℃)'},{value:'超高',text:'超高(93-107℃)'}],
+                defaultTemp
+            );
+            
+            // 载荷选择框
+            const defaultLoad = def.load || '低';
+            const loadTd = createSelectCell(
+                [{value:'低',text:'低(C/P>15)'},{value:'中',text:'中(C/P=8-15)'},{value:'高',text:'高(C/P=4-8)'},{value:'很高',text:'很高(C/P<4)'}],
+                defaultLoad
+            );
+
+            // 污染选择框
+            const defaultContam = def.contam || '低';
+            const contamTd = createSelectCell(
+                [{value:'低',text:'低'},{value:'中',text:'中'},{value:'高',text:'高'}],
+                defaultContam
+            );
+
+            const gpTd = document.createElement('td'); gpTd.appendChild(Object.assign(document.createElement('input'),{readOnly:true}));
+            const userDailyTd = document.createElement('td'); userDailyTd.appendChild(Object.assign(document.createElement('input'),{readOnly:true}));
+            const coefTd = document.createElement('td'); coefTd.appendChild(Object.assign(document.createElement('input'),{readOnly:true}));
+            const recMonthTd = document.createElement('td'); recMonthTd.appendChild(Object.assign(document.createElement('input'),{readOnly:true}));
+
+            const opTd = document.createElement('td');
+            const del = document.createElement('button'); del.className='delete-btn'; del.textContent='删除';
+            del.addEventListener('click', ()=>{ if(confirm('删除该行？')){ tr.remove(); recalcAll(); }});
+            opTd.appendChild(del);
+
+            // append in order
+            tr.appendChild(deviceTd);
+            tr.appendChild(modelTd);
+            tr.appendChild(dTd);
+            tr.appendChild(bTd);
+            tr.appendChild(methodTd);
+            tr.appendChild(nTd);
+            tr.appendChild(rpmTd);
+            tr.appendChild(tempTd);
+            tr.appendChild(loadTd);
+            tr.appendChild(contamTd);
+            tr.appendChild(gpTd);
+            tr.appendChild(userDailyTd);
+            tr.appendChild(coefTd);
+            tr.appendChild(recMonthTd);
+            tr.appendChild(opTd);
+
+            gridBody.appendChild(tr);
+            recalcRow(tr);
+        }
+
+        /* ========== 计算行 ========== */
+        function recalcRow(tr) {
+            try {
+                const tds = tr.querySelectorAll('td');
+                const D = parseFloat(tds[2].querySelector('input').value) || 0;
+                const B = parseFloat(tds[3].querySelector('input').value) || 0;
+                const method = tds[4].querySelector('select').value;
+                const N_user = Math.max(1, parseFloat(tds[5].querySelector('input').value) || parseInt(defaultN.value) || 60);
+                const rpmLevel = tds[6].querySelector('select').value;
+                const tempLevel = tds[7].querySelector('select').value;
+                const loadLevel = tds[8].querySelector('select').value;
+                const contamLevel = tds[9].querySelector('select').value;
+
+                // 每次加脂量 Gp
+                let Gp = 0;
+                if (D>0 && B>0) Gp = (method==='both') ? 0.005 * D * B : 0.002 * D * B;
+
+                // determine per-row coefficients
+                const tempCoef = tempMap[tempLevel] || 1.0;
+                const rpmCoef = rpmMap[rpmLevel] || 1.0;
+                const loadCoef = loadMap[loadLevel] || 1.0;
+                const contCoef = contamMap[contamLevel] || 1.0;
+
+                const totalCoef = parseFloat((tempCoef * rpmCoef * loadCoef * contCoef).toFixed(6)) || 1.0;
+
+                const baseDaily_user = (N_user>0) ? (Gp / N_user) : 0;
+                const actualDaily_user = baseDaily_user * totalCoef;
+
+                // 建议间隔：N_suggest = max(1, round(N_user / totalCoef))
+                const N_suggest = Math.max(1, Math.round(N_user / (totalCoef || 1)));
+                const baseDaily_rec = (N_suggest>0) ? (Gp / N_suggest) : 0;
+                const actualDaily_rec = baseDaily_rec * totalCoef;
+                const monthDaysVal = Math.max(1, parseInt(monthDays.value) || 30);
+                const monthly_rec = actualDaily_rec * monthDaysVal;
+
+                // 写入单元格
+                tds[10].querySelector('input').value = Gp ? Gp.toFixed(2) : '';
+                tds[11].querySelector('input').value = actualDaily_user ? actualDaily_user.toFixed(3) : '';
+                tds[12].querySelector('input').value = totalCoef.toFixed(3);
+                tds[13].querySelector('input').value = monthly_rec ? monthly_rec.toFixed(2) : '';
+
+                recalcSummary();
+            } catch(e){ console.error(e); }
+        }
+
+        /* ========== 整表计算与汇总 ========== */
+        function recalcAll(){ const rows=Array.from(gridBody.querySelectorAll('tr')); rows.forEach(r=>recalcRow(r)); }
+
+        function recalcSummary(){
+            let sumGp=0,sumUserDaily=0,sumRecMonthly=0;
+            const rows=Array.from(gridBody.querySelectorAll('tr'));
+            rows.forEach(r=>{
+                const cells=r.querySelectorAll('td');
+                sumGp += parseFloat(cells[10].querySelector('input').value) || 0;
+                sumUserDaily += parseFloat(cells[11].querySelector('input').value) || 0;
+                sumRecMonthly += parseFloat(cells[13].querySelector('input').value) || 0;
+            });
+            document.getElementById('sumGp').textContent = sumGp.toFixed(2);
+            document.getElementById('sumUserDaily').textContent = sumUserDaily.toFixed(3);
+            document.getElementById('sumRecMonthly').textContent = sumRecMonthly.toFixed(2);
+        }
+
+        /* ========== 导入 CSV/XLSX ========== */
+        async function handleFile(e){
+            const f = e.target.files[0];
+            if(!f) return;
+            if(typeof XLSX === 'undefined') await loadScript('https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js');
+            const name = f.name.toLowerCase();
+            const reader = new FileReader();
+            reader.onload = (ev)=>{
+                let data = ev.target.result;
+                let workbook;
+                try{
+                    if(name.endsWith('.csv')) workbook = XLSX.read(data, {type:'binary', raw:true});
+                    else workbook = XLSX.read(data, {type:'array'});
+                }catch(err){
+                    try{ workbook = XLSX.read(data, {type:'binary'}); }catch(e){ alert('无法读取文件'); return; }
+                }
+                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                const aoa = XLSX.utils.sheet_to_json(firstSheet, {header:1, defval:''});
+                if(aoa.length===0){ alert('导入文件为空'); return;}
+                const header = aoa[0].map(h=>String(h||'').trim().toLowerCase());
+                const mapping = {};
+                header.forEach((h,i)=>{
+                    if(h.includes('设备')||h.includes('device')) mapping[i]='device';
+                    else if(h.includes('型号')||h.includes('model')) mapping[i]='model';
+                    else if(h==='d' || h.includes('外径')||h.includes('dia')) mapping[i]='D';
+                    else if(h==='b' || h.includes('宽')||h.includes('width')) mapping[i]='B';
+                    else if(h.includes('润滑方式')||h.includes('method')) mapping[i]='method';
+                    else if(h.includes('间隔')||h==='n') mapping[i]='N';
+                    else if(h.includes('转速')||h.includes('rpm')) mapping[i]='rpm';
+                    else if(h.includes('运行温度')||h.includes('temp')) mapping[i]='temp';
+                    else if(h.includes('载荷')||h.includes('load')) mapping[i]='load';
+                    else if(h.includes('污染')) mapping[i]='contam';
+                });
+                const dataRows = aoa.slice(1);
+                dataRows.forEach(row=>{
+                    const obj={};
+                    row.forEach((cell,i)=>{ const key=mapping[i]; if(key) obj[key]=cell; });
+                    addRow({
+                        device: obj.device||'',
+                        model: obj.model||'',
+                        D: obj.D||'',
+                        B: obj.B||'',
+                        method: (String(obj.method||'').includes('单')) ? 'one' : (String(obj.method||'').includes('两')? 'both': defaultMethod.value),
+                        N: obj.N||defaultN.value,
+                        rpm: obj.rpm||'中',
+                        temp: obj.temp||'中',
+                        load: obj.load||'低',
+                        contam: obj.contam||'低'
+                    });
+                });
+                fileInput.value=''; recalcAll(); alert('导入完成：' + dataRows.length + ' 行已添加（请检查并点击刷新计算）');
+            };
+            if(name.endsWith('.csv')) reader.readAsBinaryString(f); else reader.readAsArrayBuffer(f);
+        }
+
+        /* ========== 导出 Excel（美化） ========== */
+        async function exportXLSX(){
+            const rowsEls = Array.from(gridBody.querySelectorAll('tr'));
+            if(rowsEls.length===0){ alert('表格为空，先添加数据再导出'); return; }
+            if(typeof XLSX === 'undefined') await loadScript('https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js');
+
+            const title = '智能单点润滑统计表';
+            const header = ['设备编号','轴承型号','D (mm)','B (mm)','润滑方式','间隔 N (天)','转速','运行温度','载荷','污染','每次加脂 Gp (g)','日用量 (N) g','总系数','月用量 (g)'];
+            const aoa = [];
+            aoa.push([title]);
+            aoa.push(['生成时间:', new Date().toLocaleString(), '当月天数:', monthDays.value, '默认间隔:', defaultN.value]);
+            aoa.push(header);
+
+            rowsEls.forEach(tr=>{
+                const cells = tr.querySelectorAll('td');
+                aoa.push([
+                    cells[0].querySelector('input').value.trim(),
+                    cells[1].querySelector('select').value.trim(),
+                    cells[2].querySelector('input').value.trim(),
+                    cells[3].querySelector('input').value.trim(),
+                    cells[4].querySelector('select').value === 'both' ? '两侧' : '单侧',
+                    cells[5].querySelector('input').value.trim(),
+                    cells[6].querySelector('select').value,
+                    cells[7].querySelector('select').value,
+                    cells[8].querySelector('select').value,
+                    cells[9].querySelector('select').value,
+                    cells[10].querySelector('input').value.trim(),
+                    cells[11].querySelector('input').value.trim(),
+                    cells[12].querySelector('input').value.trim(),
+                    cells[13].querySelector('input').value.trim()
+                ]);
+            });
+
+            // summary row
+            aoa.push([]);
+            aoa.push(['合计','','','','','','','','','',
+                document.getElementById('sumGp').textContent,
+                document.getElementById('sumUserDaily').textContent,
+                '',
+                document.getElementById('sumRecMonthly').textContent
+            ]);
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(aoa);
+
+            // merges: title across header len; second row small info merge
+            ws['!merges'] = ws['!merges'] || [];
+            ws['!merges'].push({s:{r:0,c:0}, e:{r:0,c:header.length-1}});
+            ws['!merges'].push({s:{r:1,c:1}, e:{r:1,c:2}});
+
+            // set widths
+            ws['!cols'] = [
+                {wch:10},{wch:12},{wch:8},{wch:8},{wch:10},{wch:10},{wch:8},{wch:12},{wch:10},{wch:8},
+                {wch:12},{wch:12},{wch:8},{wch:12}
+            ];
+
+            // style title + header + summary
+            function setStyle(r,c,style){
+                const addr = XLSX.utils.encode_cell({r:r,c:c});
+                ws[addr] = ws[addr] || {t:'s', v: ws[addr] && ws[addr].v ? ws[addr].v : ''};
+                ws[addr].s = Object.assign(ws[addr].s||{}, style);
+            }
+            // title
+            for(let c=0;c<header.length;c++){
+                setStyle(0,c,{font:{bold:true,sz:14},alignment:{horizontal:'center',vertical:'center'}});
+            }
+            // header row at index 2
+            for(let c=0;c<header.length;c++){
+                setStyle(2,c,{font:{bold:true},fill:{fgColor:{rgb:"DDE9FF"}},alignment:{horizontal:'center'},border:{
+                    top:{style:'thin',color:{rgb:'B7C9E9'}},bottom:{style:'thin',color:{rgb:'B7C9E9'}},
+                    left:{style:'thin',color:{rgb:'B7C9E9'}},right:{style:'thin',color:{rgb:'B7C9E9'}}
+                }});
+            }
+            // data rows borders
+            const dataStart = 3;
+            for(let r=dataStart;r<dataStart+rowsEls.length;r++){
+                for(let c=0;c<header.length;c++){
+                    setStyle(r,c,{alignment:{horizontal:'center'},border:{
+                        top:{style:'thin',color:{rgb:'E6EEF9'}},bottom:{style:'thin',color:{rgb:'E6EEF9'}},
+                        left:{style:'thin',color:{rgb:'E6EEF9'}},right:{style:'thin',color:{rgb:'E6EEF9'}}
+                    }});
+                }
+            }
+            // summary last row
+            const summaryRow = aoa.length-1;
+            for(let c=0;c<header.length;c++){
+                setStyle(summaryRow,c,{font:{bold:true},fill:{fgColor:{rgb:'F3F5F7'}},alignment:{horizontal:'center'}});
+            }
+
+            // freeze
+            ws['!freeze'] = {xSplit:"0", ySplit:"3"};
+            ws['!autofilter'] = {ref: XLSX.utils.encode_range({s:{r:2,c:0}, e:{r:2,c:header.length-1}})};
+
+            XLSX.utils.book_append_sheet(wb, ws, '润滑计划');
+            const dt = new Date();
+            const fname = `润滑计划_${dt.getFullYear()}${String(dt.getMonth()+1).padStart(2,'0')}${String(dt.getDate()).padStart(2,'0')}.xlsx`;
+            XLSX.writeFile(wb, fname);
+        }
+
+        /* ========== 动态脚本加载 ========= */
+        function loadScript(src){ return new Promise((res,rej)=>{ const s=document.createElement('script'); s.src=src; s.onload=()=>res(); s.onerror=()=>rej(); document.head.appendChild(s); }); }
+
+        /* ========== 响应事件 ========== */
+        monthDays.addEventListener('input', recalcAll);
+
+        // initial example row
+        addRow({device:'EQ-1001', model:'6330 C3', D:320, B:65, method:'both', N:60, rpm:'中'});
+    </script>
+</body>
+</html>
